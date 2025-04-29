@@ -19,7 +19,7 @@ This repository contains the computational framework used to model the high-rate
 
 Follow the below mentioned steps to re-create te virtual environment with all the correct package versions for this project.
 
-:exclamation: **Before creating a virtual environment please make sure you fully installed Python >3.9.5 (for Linux: -dev version) and myokit (v. 1.35.2) already. Please follow these steps carefully: http://myokit.org/install.** :exclamation:
+:exclamation: **Before creating a virtual environment please make sure you fully installed Python >3.9.5 (for Linux: -dev version) and myokit (v. 1.37) already. Please follow these steps carefully: http://myokit.org/install.** :exclamation:
 
 
 ***1. Clone the repo:***
