@@ -73,8 +73,6 @@ I_SK_trafficking.S                   = 1060
 #############################################
 
 [I_k2p]
-# Question: GK2P scalar for both SR and AF? For now I assumed both need to be scaled.
-# Also I only scaled the AF by the ratio.
 human = 0
 Gk2p_scalar = 1.73
 Gk2p_ratio = 1.892
@@ -126,7 +124,6 @@ I_kur = if(parameters.ikur_block == 0, I_kur_original, I_kur_blocked)
 ############################################ Late I_Na ######## 
 
 [I_Na_late]
-# Question: Do I scale this GNaL, because this is 0 when in SR?
 GNaL_scalar = 0.991
 #GNaL = GNaL_scalar * 0.0025 * parameters.AF
 GNaL = GNaL_scalar*(0.0005+0.0020*parameters.AF)
@@ -197,7 +194,6 @@ dot(Tn_CL) = parameters.kon_tncl * Ca_Concentrations.Ca_i * (parameters.Bmax_TnC
 #############################################
 
 [I_Ca]
-# Question: I don't find gCaL (should be 1.475)
 ca_block = 1
 ICaL_fact = if(parameters.useSchmidt2015Remodeling < 1, 1 * ca_block, 0.65 * ca_block) ################################ 0.65 from Circulation 2015
 I_Ca = (I_Ca_junc + I_Ca_sl)      
@@ -283,8 +279,7 @@ I_ClCa = (I_ClCa_junc + I_ClCa_sl)
 I_ClCa_junc = parameters.Fjunc * parameters.GClCa / (1 + parameters.KdClCa / Ca_Concentrations.Ca_j) * (membrane.V - parameters.ecl)
     in [A/F]
 I_ClCa_sl = parameters.Fsl * parameters.GClCa / (1 + parameters.KdClCa / Ca_Concentrations.Ca_sl) * (membrane.V - parameters.ecl)
-    in [A/F]
-# Question: Is this GCIB?   
+    in [A/F] 
  
 I_Clbk = parameters.GClB * (membrane.V - parameters.ecl)
     in [A/F]
@@ -294,7 +289,6 @@ I_Clbk = parameters.GClB * (membrane.V - parameters.ecl)
 [I_Ki]
 
 
-#block_I_Ki=0.95 #################
 
 Na_observed = Na_Concentrations.Na_sl
 aki_sl = (0.1+0.9/(1+(Na_Concentrations.Na_sl/7)^2))*1/(1+exp(0.2385*(membrane.V-parameters.ek-59.215)))
@@ -352,7 +346,6 @@ xrss = 1 / (1 + exp(-(membrane.V + 10 [mV]) / 5 [mV]))
     in [1]
 
 [I_Ks]
-# Question: Do I scale I_ks here or factor_iks or some of the gks_junc and gks_sl?
 GKs_scalar = 0.402
 I_ks = (I_ks_junc + I_ks_sl)
     in [A/F]
@@ -411,7 +404,6 @@ I_Na_junc = Ina_scalar * parameters.Fjunc * g_Na * fast_sodium_current_m_gate.m 
     in [pA]#parameters.Cmem
 I_Na_sl = Ina_scalar * (1 - parameters.Fjunc) * g_Na * fast_sodium_current_m_gate.m ^ 3 * fast_sodium_current_h_gate.h * fast_sodium_current_j_gate.j * (membrane.V - E_Na_sl)
 I_Na_tot = I_Na_junc + I_Na_sl
-# Question: What is this scalar? I think this was already in there from the beginning 
 Ina_scalar = 1.15 
 
 [fast_sodium_current_h_gate]
@@ -485,7 +477,6 @@ I_pca_sl = parameters.Fsl * parameters.Q10SLCaP ^ parameters.Qpow * parameters.I
     in [A/F]
 
 [I_to]
-# Question: is this GTo from the supplements and where to put it?
 Gto_scalar = 1.935
 GtoFast = Gto_scalar * (1 - 0.8 * parameters.AF * (1 - parameters.RA) - 0.45 * parameters.AF * parameters.RA) * 0.165 # Updated from Caballero 2010 (-45% RA, -80% LA)
     ITo_Fact = if(parameters.useSchmidt2015Remodeling < 1, 1, 0.4) ############################# 0.4 from circulation 2015
@@ -674,7 +665,7 @@ Fsl = 1 - Fjunc
     in [1]
 Fsl_CaL = 1 - Fjunc_CaL
     in [1]
-# Question: Is this the GCaB I need to scale?
+
 GCaB = 6.0643e-4 * 0.998
 #GCaB = 6.0643e-4#0.0005513 [mS/uF]
 #    in [mS/uF]
@@ -724,12 +715,12 @@ KmNao = 87.5 [mmol/L]
     in [mmol/L]
 KmPCa = 0.0005 [mmol/L]
     in [mmol/L]
-# Question: Both conditions scaled? 
+
 Kmf = if(parameters.AF == 1, 1.482 * 0.907 * 1.25 * 2.5 * 0.000246, 0.907 * 2.5 * 0.000246)
     in [mmol/L]
 #Kmf = if(parameters.AF == 1, 1.25 * 2.5 * 0.000246, 2.5 * 0.000246)
 #    in [mmol/L]
-Kmr = 1.7 [mmol/L] #REMEMBER original 1.7
+Kmr = 1.7 [mmol/L] 
     in [mmol/L]
 Ko = 5.4 [mmol/L]
     in [mmol/L]
@@ -814,7 +805,7 @@ kim = 0.005 [mS/uF]
 
 koCa = if(parameters.AF == 0, koCaBase+20*AF, 0.29 * koCaBase+20*AF) #+10*ISO*(1-AF)10 [1/mM^2/ms]
     in [1/mM^2/ms]
-koCaBase = 10  #REMEMBER; side effect of EGTA buffering 0.5 Hz 1 Hz and 5 Hz (5, 10 and 7.5) --> plots freq dep of ftrap. 
+koCaBase = 10  
 koff_cam = 0.238 [mS/uF]
     in [mS/uF]
 koff_csqn = 65 [mS/uF]
