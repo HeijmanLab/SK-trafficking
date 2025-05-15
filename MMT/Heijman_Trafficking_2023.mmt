@@ -76,7 +76,12 @@ I_SK_trafficking.S                   = 1060
 human = 0
 Gk2p_scalar = 1.73
 Gk2p_ratio = 1.892
-I_k2p = gk2p * ok2p * (membrane.V - parameters.ek)
+
+
+# Define a block parameter
+k2p_block = 1
+
+I_k2p = k2p_block * (gk2p * ok2p * (membrane.V - parameters.ek))
 #gk2p = if(parameters.AF == 0, Gk2p_scalar * 0.005*(1-parameters.AF), Gk2p_ratio * Gk2p_scalar * (0.005+(0.0095*parameters.AF)) * (1 - parameters.ik2p_block))
 gk2p = Gk2p_scalar*0.0050*(1+(Gk2p_ratio*0.0145/0.005-1)*parameters.AF)
 k2pss = 0.2 + (0.8/(1 + exp(-(membrane.V-Vmid)/14)))
