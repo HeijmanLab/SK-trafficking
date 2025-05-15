@@ -1712,7 +1712,7 @@ def visualize_PoM_outputs(output_type='channel', n_repeats=5, subsample=20, base
     plt.tight_layout()
     plt.show()
 
-def drug_effects(freq, t, incub, interval, sk_block, ikur_block, ikr_block, AVE0118_conc):
+def drug_effects(freq, t, incub, interval, sk_block, ikur_block, ikr_block, k2p_block, AVE0118_conc, combined = False):
     """
     Simulates drug effects on cardiac electrophysiology under specified frequency and blocking conditions.
 
@@ -1724,7 +1724,9 @@ def drug_effects(freq, t, incub, interval, sk_block, ikur_block, ikr_block, AVE0
         sk_block (bool): Whether SK channel block is applied.
         ikur_block (bool): Whether IKur block is applied.
         ikr_block (bool): Whether IKr block is applied.
+        k2p_block (bool): Whether k2p block is applied.
         AVE0118_conc (float): Concentration of AVE0118 for IKur block.
+        combined (bool): Whether K2P and SK block are applied.
 
     Returns:
         dict: Simulation results with logged data, APD90, and final state.
@@ -1752,6 +1754,11 @@ def drug_effects(freq, t, incub, interval, sk_block, ikur_block, ikr_block, AVE0
         s.set_constant('parameters.ikur_block', 1)
     if ikr_block:
         s.set_constant('I_Kr.ikr_block', 0.7)
+    if k2p_block:
+        s.set_constant('I_k2p.k2p_block', 0.2)
+    if combined:
+        s.set_constant('I_SK.sk_block', 0.2)
+        s.set_constant('I_k2p.k2p_block', 0.2)
 
     # Set initial model state
     s.set_state(incub)
@@ -1773,7 +1780,7 @@ def drug_effects(freq, t, incub, interval, sk_block, ikur_block, ikr_block, AVE0
     # Return results
     return dict(d=d, apd=apd, state=s.state())
 
-def current_prepace_drugs(pp, freq, AVE0118_conc, sk_block=False, ikur_block=False, ikr_block=False):
+def current_prepace_drugs(pp, freq, AVE0118_conc, sk_block=False, ikur_block=False, ikr_block=False, k2p_block=False, combined = False):
     """
     Pre-paces the model with optional drug blocks to reach steady-state before drug simulation.
 
@@ -1784,6 +1791,8 @@ def current_prepace_drugs(pp, freq, AVE0118_conc, sk_block=False, ikur_block=Fal
         sk_block (bool): Whether SK channel block is applied.
         ikur_block (bool): Whether IKur block is applied.
         ikr_block (bool): Whether IKr block is applied.
+        k2p_block (bool): Whether K2P block is applied.
+        combined (bool): Whether K2P and SK block are applied.
 
     Returns:
         dict: Dictionary of initial states (with/without Ca_i and Vm components).
@@ -1814,6 +1823,11 @@ def current_prepace_drugs(pp, freq, AVE0118_conc, sk_block=False, ikur_block=Fal
         s.set_constant('parameters.ikur_block', 1)
     if ikr_block:
         s.set_constant('I_Kr.ikr_block', 0.7)
+    if k2p_block:
+        s.set_constant('I_k2p.k2p_block', 0.2)
+    if combined: 
+        s.set_constant('I_SK.sk_block', 0.2)
+        s.set_constant('I_k2p.k2p_block', 0.2)
 
     # Run pre-pacing
     s.pre(bcl * pp)

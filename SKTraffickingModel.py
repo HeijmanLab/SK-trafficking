@@ -1777,19 +1777,27 @@ ten_min_ms = 600000
 twenty_min_ms = 1200000
 
 # Perform pre-pacing for the drug effects
-pp_1hz_skb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = True, ikur_block = False, ikr_block = False)
-pp_1hz_ikurb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = False, ikur_block = True, ikr_block = False)
-pp_1hz_ikrb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = False, ikur_block = False, ikr_block = True)
-    
+pp_1hz_skb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = True, ikur_block = False, ikr_block = False, k2p_block = False, combined = False)
+pp_1hz_ikurb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = False, ikur_block = True, ikr_block = False, k2p_block = False, combined = False)
+pp_1hz_ikrb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = False, ikur_block = False, ikr_block = True, k2p_block = False, combined = False)
+pp_1hz_k2pb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = False, ikur_block = False, ikr_block = False, k2p_block = True, combined = False)
+pp_1hz_comb = current_prepace_drugs(pp = 1000, AVE0118_conc = 10, freq = 1, sk_block = False, ikur_block = False, ikr_block = False, k2p_block = False, combined = True)
+
 # Run the simulation at 1 Hz and 5 Hz 
-sk_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_skb['incub_comp'], AVE0118_conc = 10, sk_block = True, ikur_block = False, ikr_block = False)
-sk_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = sk_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = True, ikur_block = False, ikr_block = False)
+sk_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_skb['incub_comp'], AVE0118_conc = 10, sk_block = True, ikur_block = False, ikr_block = False, k2p_block = False, combined = False)
+sk_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = sk_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = True, ikur_block = False, ikr_block = False, k2p_block = False, combined = False)
 
-ikur_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_ikurb['incub_comp'], AVE0118_conc = 10, sk_block = False, ikur_block = True, ikr_block = False)
-ikur_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = ikur_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = False, ikur_block = True, ikr_block = False)
+ikur_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_ikurb['incub_comp'], AVE0118_conc = 10, sk_block = False, ikur_block = True, ikr_block = False, k2p_block = False, combined = False)
+ikur_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = ikur_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = False, ikur_block = True, ikr_block = False, k2p_block = False, combined = False)
 
-ikr_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_ikrb['incub_comp'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = True)
-ikr_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = ikr_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = True)
+ikr_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_ikrb['incub_comp'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = True, k2p_block = False, combined = False)
+ikr_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = ikr_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = True, k2p_block = False, combined = False)
+
+k2p_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_k2pb['incub_comp'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = False, k2p_block = True, combined = False)
+k2p_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = k2p_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = False, k2p_block = True, combined = False)
+
+comb_block_1hz_10min = drug_effects(freq = 1, t = 10, interval = 1, incub = pp_1hz_comb['incub_comp'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = False, k2p_block = False, combined = True)
+comb_block_5hz_20min = drug_effects(freq = 5, t = 10, interval = 1, incub = comb_block_1hz_10min['state'], AVE0118_conc = 10, sk_block = False, ikur_block = False, ikr_block = False, k2p_block = False, combined = True)
 
 # Get the insets
 rev11_5hz_c_free = reversibility(freq = 5, t = 0.1, ca_i = None, interval = 1, incub = rev10_1hz_c_free['state'], current_clamp = True)
@@ -1805,16 +1813,26 @@ ikurb_20min_apd = calc_apd90(data = ikur_block_5hz_20min, freq = 5, t = 10, cuto
 ikrb_10min_apd = calc_apd90(data = ikr_block_1hz_10min, freq = 1, t = 10, cutoff = 1000)
 ikrb_20min_apd = calc_apd90(data = ikr_block_5hz_20min, freq = 5, t = 10, cutoff = 1000)
 
+k2p_10min_apd = calc_apd90(data = k2p_block_1hz_10min, freq = 1, t = 10, cutoff = 1000)
+k2p_20min_apd = calc_apd90(data = k2p_block_5hz_20min, freq = 5, t = 10, cutoff = 1000)
+
+comb_10min_apd = calc_apd90(data = comb_block_1hz_10min, freq = 1, t = 10, cutoff = 1000)
+comb_20min_apd = calc_apd90(data = comb_block_5hz_20min, freq = 5, t = 10, cutoff = 1000)
+
 # Create dataframes for each scenario
 baseline_apd_df = create_block_df_apd(first_10_free, second_10_free)
 sk_block_df_apd = create_block_df_apd(skb_10min_apd, skb_20min_apd)
 ikur_block_df_apd = create_block_df_apd(ikurb_10min_apd, ikurb_20min_apd)
 ikr_block_df_apd = create_block_df_apd(ikrb_10min_apd, ikrb_20min_apd)
+k2p_block_df_apd = create_block_df_apd(k2p_10min_apd, k2p_20min_apd)
+comb_block_df_apd = create_block_df_apd(comb_10min_apd, comb_20min_apd)
 
 baseline_df = create_block_df(rev10_1hz_c_free, rev20_5hz_c_free, offset = ten_min_ms)
 sk_block_df = create_block_df(sk_block_1hz_10min, sk_block_5hz_20min, offset = ten_min_ms)
 ikur_block_df = create_block_df(ikur_block_1hz_10min, ikur_block_5hz_20min, offset = ten_min_ms)
 ikr_block_df = create_block_df(ikr_block_1hz_10min , ikr_block_5hz_20min, offset = ten_min_ms)
+k2p_block_df = create_block_df(k2p_block_1hz_10min, k2p_block_5hz_20min, offset = ten_min_ms)
+comb_block_df = create_block_df(comb_block_1hz_10min , comb_block_5hz_20min, offset = ten_min_ms)
 
 def segment_extract(df, t10, t20, c1, c2):
     segment_10 = df[(df['Time'] >= (t10 - c1)) & (df['Time'] < t10)].copy()
@@ -1829,18 +1847,17 @@ base_10, base_20 = segment_extract(df = baseline_df, t10 = ten_min_ms, t20 = twe
 skb_10, skb_20 = segment_extract(df = sk_block_df, t10 = ten_min_ms, t20 = twenty_min_ms, c1 = 1000, c2 = 1000)
 ikur_10, ikur_20 = segment_extract(df = ikur_block_df, t10 = ten_min_ms, t20 = twenty_min_ms, c1 = 1000, c2 = 1000)
 ikr_10, ikr_20 = segment_extract(df = ikr_block_df, t10 = ten_min_ms, t20 = twenty_min_ms, c1 = 1000, c2 = 1000)
+k2p_10, k2p_20 = segment_extract(df = k2p_block_df, t10 = ten_min_ms, t20 = twenty_min_ms, c1 = 1000, c2 = 1000)
+comb_10, comb_20 = segment_extract(df = comb_block_df, t10 = ten_min_ms, t20 = twenty_min_ms, c1 = 1000, c2 = 1000)
 
-segment_10min = ikur_block_df[(ikur_block_df['Time'] >= (600000 - 1000)) & (ikur_block_df['Time'] < 6000000)].copy()
-segment_10min['Aligned_Time'] = segment_10min['Time'] - (ten_min_ms - 1000)
-
-segment_20min = sk_block_df[(sk_block_df['Time'] >= (twenty_min_ms - 1000)) & (sk_block_df['Time'] < twenty_min_ms)].copy()
-segment_20min['Aligned_Time'] = segment_20min['Time'] - (twenty_min_ms - 1000)
 
 plt.figure()
 plt.plot(base_10['Aligned_Time'], base_10['Vm'], label = f"No Block, APD90 = {round(first_10_free['apd90'][-1])} ms")
 plt.plot(skb_10['Aligned_Time'], skb_10['Vm'], label = f"SK block, APD90 = {round(skb_10min_apd['apd90'][-1])} ms")
 plt.plot(ikur_10['Aligned_Time'], ikur_10['Vm'], label = f"IKur block, APD90 = {round(ikurb_10min_apd['apd90'][-1])} ms")
 plt.plot(ikr_10['Aligned_Time'], ikr_10['Vm'], label = f"IKr block, APD90 = {round(ikrb_10min_apd['apd90'][-1])} ms")
+plt.plot(k2p_10['Aligned_Time'], k2p_10['Vm'], label = f"K2P block, APD90 = {round(k2p_10min_apd['apd90'][-1])} ms")
+plt.plot(comb_10['Aligned_Time'], comb_10['Vm'], label = f"K2P + SK block, APD90 = {round(comb_10min_apd['apd90'][-1])} ms")
 plt.legend()
 plt.title('1 Hz')
 
@@ -1850,6 +1867,8 @@ plt.plot(base_20['Aligned_Time'], base_20['Vm'], label = f"No Block, APD90 = {ro
 plt.plot(skb_20['Aligned_Time'], skb_20['Vm'], label = f"SK block, APD90 = {round(skb_20min_apd['apd90'][-1])} ms")
 plt.plot(ikur_20['Aligned_Time'], ikur_20['Vm'], label = f"IKur block, APD90 = {round(ikurb_20min_apd['apd90'][-1])} ms")
 plt.plot(ikr_20['Aligned_Time'], ikr_20['Vm'], label = f"IKr block, APD90 = {round(ikrb_20min_apd['apd90'][-1])} ms")
+plt.plot(k2p_20['Aligned_Time'], k2p_20['Vm'], label = f"K2P block, APD90 = {round(k2p_20min_apd['apd90'][-1])} ms")
+plt.plot(comb_20['Aligned_Time'], comb_20['Vm'], label = f"K2P + SK block, APD90 = {round(comb_20min_apd['apd90'][-1])} ms")
 plt.legend()
 plt.title('5 Hz')
 
@@ -1865,3 +1884,9 @@ ikur_20.to_csv("Results/ikurblock_20min_segment.csv", index=False)
 
 ikr_10.to_csv("Results/ikrblock_10min_segment.csv", index=False)
 ikr_20.to_csv("Results/ikrblock_20min_segment.csv", index=False)
+
+k2p_10.to_csv("Results/ik2pblock_10min_segment.csv", index=False)
+k2p_20.to_csv("Results/ik2pblock_20min_segment.csv", index=False)
+
+comb_10.to_csv("Results/combblock_10min_segment.csv", index=False)
+comb_20.to_csv("Results/combblock_20min_segment.csv", index=False)
