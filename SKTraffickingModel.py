@@ -106,9 +106,9 @@ max_ftrap_combined = pd.DataFrame({
     'Max Ca2+ Buffer (fTrap)': max_ftrap_dem})
   
 # Export to Prism
-ftrap_freq_export(dictionary = trian_reg, data = 'max_ftrap', freq = freq, exp_name = 'freq_dep_reg')
-ftrap_freq_export(dictionary = trian_dem, data = 'max_ftrap', freq = freq, exp_name = 'freq_dep_dem')
-max_ftrap_combined.to_csv('Results/max_ftrap_freq.csv', index = False)
+ftrap_freq_export(dictionary = trian_reg, data = 'max_ftrap', freq = freq, exp_name = 'freq_dep_regV2')
+ftrap_freq_export(dictionary = trian_dem, data = 'max_ftrap', freq = freq, exp_name = 'freq_dep_demV2')
+max_ftrap_combined.to_csv('Results/max_ftrap_freqV2.csv', index = False)
 #%% Re-create the plots from Figure 7 of Heijman et al. (2023). Circ Res.
 
 # Run the simulation for 10 minutes of triangular pacing and then a square voltage clamp protocol at 0.1 and 5 Hz pacing.
